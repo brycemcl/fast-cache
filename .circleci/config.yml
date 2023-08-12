@@ -30,8 +30,8 @@ jobs:
       - save_cache:
           key: v1-{{ .Environment.CIRCLE_JOB }}-{{ .Environment.CIRCLE_SHA1 }}
           paths:
-            - .node_modules/uploads/
-      - run: mv .node_modules/uploads uploads.old
+            - node_modules/uploads/
+      - run: mv node_modules/uploads uploads.old
       - restore_cache:
           keys:
             - v1-{{ .Environment.CIRCLE_JOB }}-{{ .Environment.CIRCLE_SHA1 }}

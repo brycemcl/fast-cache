@@ -10,7 +10,7 @@
     "start:server": "tsx index.ts",
     "start:upload": "./upload.sh",
     "start:restore": "./restore.sh",
-    "start:createData": "pnpm run kill:uploads && tsx createData.ts"
+    "start:createData": "tsx createData.ts"
   },
   "keywords": [],
   "author": "",
