@@ -40,6 +40,6 @@ workflows:
   comparison:
     jobs:
       - lz4
-      - circleci
-        requires:
-          - lz4
+      - circleci:
+          requires:
+            - lz4
