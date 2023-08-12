@@ -2,7 +2,8 @@ version: 2.1
 
 jobs:
   lz4:
-    resource_class: small
+    resource_class: large
+    working_directory: /mnt/ramdisk
     docker:
       - image: node:18-slim
     steps:
@@ -17,7 +18,8 @@ jobs:
       - run: pnpm run start:upload
       - run: pnpm run start:restore
   circleci:
-    resource_class: small
+    resource_class: large
+    working_directory: /mnt/ramdisk
     docker:
       - image: node:18-slim
     steps:
