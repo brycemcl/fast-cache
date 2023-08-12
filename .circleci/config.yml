@@ -1,0 +1,45 @@
+version: 2.1
+
+jobs:
+  lz4:
+    docker:
+      - image: node:18-slim
+    steps:
+      - run: npm install pnpm -g
+      - run: apt-get update && apt-get install -y curl tar lz4
+      - checkout
+      - run: pnpm install
+      - run:
+          command: pnpm run start:server
+          background: true
+      - run: pnpm run start:createData
+      - run: pnpm run start:upload
+      - run: pnpm run start:restore
+  circleci:
+    docker:
+      - image: node:18-slim
+    steps:
+      - run: npm install pnpm -g
+      - run: apt-get update && apt-get install -y curl tar lz4
+      - checkout
+      - run: pnpm install
+      - run:
+          command: pnpm run start:server
+          background: true
+      - run: pnpm run start:createData
+      - save_cache:
+          key: v1-{{ .Environment.CIRCLE_JOB }}-{{ .Environment.CIRCLE_SHA1 }}
+          paths:
+            - .node_modules/uploads/
+      - run: mv .node_modules/uploads uploads.old
+      - restore_cache:
+          keys:
+            - v1-{{ .Environment.CIRCLE_JOB }}-{{ .Environment.CIRCLE_SHA1 }}
+
+workflows:
+  comparison:
+    jobs:
+      - lz4
+      - circleci
+        requires:
+          - lz4

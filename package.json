@@ -1,0 +1,28 @@
+{
+  "name": "fast-cache",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "kill:server": "kill -9 $(lsof -ti:3000)",
+    "kill:uploads": "rm -fr node_modules/uploads.old ; mv node_modules/uploads node_modules/uploads.old ; rm -fr node_modules/uploads.old &",
+    "start": "pnpm run kill:server ; pnpm run start:server & pnpm run start:createData && pnpm run start:upload && pnpm run start:restore",
+    "start:server": "tsx index.ts",
+    "start:upload": "./upload.sh",
+    "start:restore": "./restore.sh",
+    "start:createData": "pnpm run kill:uploads && tsx createData.ts"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "dependencies": {
+    "express": "^4.18.2",
+    "multer": "1.4.5-lts.1"
+  },
+  "devDependencies": {
+    "@types/express": "^4.17.17",
+    "@types/multer": "^1.4.7",
+    "tsx": "^3.12.7",
+    "typescript": "^5.1.6"
+  }
+}
