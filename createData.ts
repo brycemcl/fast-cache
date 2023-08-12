@@ -6,8 +6,8 @@ import { randomUUID } from 'crypto'
   await mkdir('node_modules/uploads')
     .catch((e) => {})
     .then(async (err) => {
-      const folders = 1000
-      const amount = folders * 100_000
+      const folders = 100
+      const amount = folders * 10_000
       for (let i = 0; i <= amount; i++) {
         const folder = String(i % (folders))
         const localPath = path.join('node_modules/uploads', folder)
