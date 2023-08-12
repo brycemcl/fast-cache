@@ -14,7 +14,7 @@ import { randomUUID } from 'crypto'
         await mkdir(localPath).catch((e) => {})
         await writeFile(localPath + '/' + String(i), randomUUID())
         if (i % 10000 === 0) {
-          console.log(`${(Date.now() - timeStart) / 1000} ${(i / amount) * 100}%`)
+          console.log(`${(Date.now() - timeStart) / 1000} seconds, ${(i / amount) * 100}% done & ${i} files`)
         }
       }
     })
