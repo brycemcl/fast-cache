@@ -1,6 +1,6 @@
 import { writeFile, mkdir } from 'fs/promises'
 import path from 'path'
-import { randomUUID } from 'crypto'
+const prom:Promise<any>[] = []
 ;(async () => {
   const timeStart = Date.now()
   await mkdir('node_modules/uploads')
@@ -12,10 +12,11 @@ import { randomUUID } from 'crypto'
         const folder = String(i % (folders))
         const localPath = path.join('node_modules/uploads', folder)
         await mkdir(localPath).catch((e) => {})
-        await writeFile(localPath + '/' + String(i), randomUUID())
+        prom.push(writeFile(localPath + '/' + String(i), String(Math.random())))
         if (i % 10000 === 0) {
-          console.log(`${(Date.now() - timeStart) / 1000} seconds, ${(i / amount) * 100}% done & ${i} files`)
+          console.log(`${(Date.now() - timeStart) / 1000} seconds, ${(i / amount) * 100}% started & ${i} files`)
         }
       }
     })
+  await Promise.all(prom)
 })()

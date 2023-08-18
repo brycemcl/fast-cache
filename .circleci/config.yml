@@ -1,19 +1,17 @@
 version: 2.1
 
 jobs:
-  lz4:
+  zstd:
     resource_class: large
     working_directory: /mnt/ramdisk
     docker:
       - image: node:18-slim
     steps:
       - run: npm install pnpm -g
-      - run: apt-get update && apt-get install -y curl tar lz4 rclone
+      - run: apt-get update && apt-get install -y curl tar zstd rclone
+      - run: rclone config create cache b2 account=$B2_ACCOUNT_ID key=$B2_APPLICATION_KEY bucket=fast-cache upload_cutoff=5M chunk_size=5M disable_checksum=true hard_delete=true memory_pool_use_mmap=true
       - checkout
       - run: pnpm install
-      - run:
-          command: pnpm run start:server
-          background: true
       - run: pnpm run start:createData
       - run: pnpm run start:upload
       - run: pnpm run start:restore
@@ -24,12 +22,8 @@ jobs:
       - image: node:18-slim
     steps:
       - run: npm install pnpm -g
-      - run: apt-get update && apt-get install -y curl tar lz4 rclone
       - checkout
       - run: pnpm install
-      - run:
-          command: pnpm run start:server
-          background: true
       - run: pnpm run start:createData
       - save_cache:
           key: v1-{{ .Environment.CIRCLE_JOB }}-{{ .Environment.CIRCLE_SHA1 }}
@@ -43,8 +37,8 @@ jobs:
 workflows:
   comparison:
     jobs:
-      - lz4
-      - circleci
+      - zstd
+      # - circleci
       # - circleci:
       #     requires:
-      #       - lz4
+      #       - zstd
