@@ -4,9 +4,9 @@ rm -rf tmp || true
 mkdir tmp || true
 
 start=$(date +%s)
-rclone cat --transfers=32 cache:fast-cache/$(date +%Y-%m-%d).tar.zstd |
+rclone cat --transfers=32 cache:fast-cache/$(date +%Y-%m-%d).tar.zstdmt |
   mbuffer -s 1M -m 512M |
-  zstd -d - |
+  zstdmt -d - |
   mbuffer -s 1M -m 512M |
   tar -xf - -C tmp/
 end=$(date +%s)
