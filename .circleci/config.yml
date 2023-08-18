@@ -8,7 +8,7 @@ jobs:
       - image: node:18-slim
     steps:
       - run: npm install pnpm -g
-      - run: apt-get update && apt-get install -y curl tar zstd rclone
+      - run: apt-get update && apt-get install -y curl tar zstd rclone mbuffer
       - run: rclone config create cache b2 account=$B2_ACCOUNT_ID key=$B2_APPLICATION_KEY bucket=fast-cache upload_cutoff=5M chunk_size=5M disable_checksum=true hard_delete=true memory_pool_use_mmap=true
       - checkout
       - run: pnpm install
