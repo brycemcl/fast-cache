@@ -1,10 +1,9 @@
 #!/bin/bash
 
 start=$(date +%s)
-tar --use-compress-program=lz4 -cf - ./node_modules/uploads/ | curl --request POST \
-  --url http://localhost:3000/ \
-  --header 'Content-Type: multipart/form-data' \
-  --form file=@-
+tar -c - ./node_modules/uploads/ |\
+lz4 -z - |\
+rclone rcat cache:fast-cache/$(date +%Y-%m-%d).tar.lz4
 end=$(date +%s)
 runtime=$((end - start))
 echo "Upload: $runtime seconds"
