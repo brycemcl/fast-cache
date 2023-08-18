@@ -9,7 +9,7 @@ jobs:
     steps:
       - run: npm install pnpm -g
       - run: apt-get update && apt-get install -y curl mbuffer tar zstd rclone
-      - run: rclone config create cache "google cloud storage" location=us-east1 token=$GCS_TOKEN bucket_policy_only=true
+      - run: rclone config create cache "google cloud storage" location=us-east1 bucket_policy_only=true env_auth=true
       # - run: rclone config create cache b2 account=$B2_ACCOUNT_ID key=$B2_APPLICATION_KEY bucket=fast-cache upload_cutoff=5M chunk_size=5M disable_checksum=true hard_delete=true memory_pool_use_mmap=true
       - checkout
       - run: pnpm install
@@ -24,7 +24,7 @@ jobs:
     steps:
       - run: npm install pnpm -g
       - run: apt-get update && apt-get install -y curl mbuffer tar lz4 rclone
-      - run: rclone config create cache "google cloud storage" location=us-east1 token=$GCS_TOKEN bucket_policy_only=true
+      - run: rclone config create cache "google cloud storage" location=us-east1 bucket_policy_only=true env_auth=true
       # - run: rclone config create cache b2 account=$B2_ACCOUNT_ID key=$B2_APPLICATION_KEY bucket=fast-cache upload_cutoff=5M chunk_size=5M disable_checksum=true hard_delete=true memory_pool_use_mmap=true
       - checkout
       - run: pnpm install
