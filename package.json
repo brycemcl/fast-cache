@@ -4,8 +4,10 @@
   "scripts": {
     "kill:uploads": "rm -fr node_modules/uploads.old ; mv node_modules/uploads node_modules/uploads.old ; rm -fr node_modules/uploads.old &",
     "start": "pnpm run start:createData && pnpm run start:upload && pnpm run start:restore",
-    "start:upload": "./upload.sh",
-    "start:restore": "./restore.sh",
+    "start:upload-lz4": "./upload-lz4.sh",
+    "start:restore-lz4": "./restore-lz4.sh",
+    "start:upload-zstd": "./upload-zstd.sh",
+    "start:restore-zstd": "./restore-zstd.sh",
     "start:createData": "tsx createData.ts"
   },
   "keywords": [],
