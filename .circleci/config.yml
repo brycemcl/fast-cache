@@ -61,6 +61,6 @@ workflows:
       - zstd:
           requires:
             - lz4
-      - circleci
+      - circleci:
           requires:
             - zstd
