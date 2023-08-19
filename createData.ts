@@ -7,7 +7,7 @@ const prom:Promise<any>[] = []
     .catch((e) => {})
     .then(async (err) => {
       const folders = 100
-      const amount = folders * 5000
+      const amount = folders * 50000
       for (let i = 0; i <= amount; i++) {
         const folder = String(i % (folders))
         const localPath = path.join('node_modules/uploads', folder)
