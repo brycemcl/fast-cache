@@ -27,7 +27,7 @@ upload_batch() {
     rclone rcat \
       --fast-list \
       --ignore-checksum \
-      --streaming-upload-cutoff=100Mi \
+      --streaming-upload-cutoff=5Gi \
       --use-mmap \
       "cache:fast-cache/$CIRCLE_JOB-$CIRCLE_BUILD_NUM-$CIRCLE_NODE_INDEX/$batch_name.tar.zstdmt"
 }

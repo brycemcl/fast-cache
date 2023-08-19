@@ -4,12 +4,9 @@ start=$(date +%s)
 tar -c ./node_modules/uploads/ |
   zstdmt --fast=5 - |
   rclone rcat \
-    --buffer-size=16Mi \
-    --checkers=16 \
     --fast-list \
     --ignore-checksum \
-    --streaming-upload-cutoff=100Ki \
-    --transfers=40 \
+    --streaming-upload-cutoff=5Gi \
     --use-mmap \
     "cache:fast-cache/$CIRCLE_JOB-$CIRCLE_BUILD_NUM-$CIRCLE_NODE_INDEX.tar.zstdmt"
 end=$(date +%s)
