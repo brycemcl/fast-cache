@@ -25,7 +25,7 @@ jobs:
       - checkout
       - restore_cache:
           keys:
-            - v1-{{ .Environment.CIRCLE_JOB }}-{{ .Environment.CIRCLE_SHA1 }}-{{ .Environment.CIRCLE_NODE_INDEX }}
+            - v1-circleci-9eec7f6e932cc7a99fa56eddd82cf8e519094922-0
       # - run: pnpm install
       # - run: pnpm install --ignore-scripts bloater
       # - run: pnpm run start:createData
@@ -57,16 +57,14 @@ workflows:
   comparison:
     jobs:
       - zstd:
-          requires:
-            - circleci
           matrix:
             parameters:
               threads:
                 - "--threads=0"
                 # - "--threads=1"
               long:
-                - "--long"
-                # - ""
+                # - "--long"
+                - ""
               speed:
                 - "--fast=5"
                 # - "--fast=4"
