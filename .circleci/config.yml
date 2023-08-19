@@ -2,7 +2,8 @@ version: 2.1
 
 jobs:
   zstd:
-    resource_class: large
+    resource_class: "arm.large"
+    working_directory: /mnt/ramdisk
     parallelism: 4
     docker:
       - image: node:18-slim
@@ -16,7 +17,8 @@ jobs:
       - run: pnpm run start:upload-zstd
       - run: pnpm run start:restore-zstd
   lz4:
-    resource_class: large
+    resource_class: "arm.large"
+    working_directory: /mnt/ramdisk
     parallelism: 4
     docker:
       - image: node:18-slim
@@ -30,7 +32,8 @@ jobs:
       - run: pnpm run start:upload-lz4
       - run: pnpm run start:restore-lz4
   zstd-chunker:
-    resource_class: large
+    resource_class: "arm.large"
+    working_directory: /mnt/ramdisk
     parallelism: 4
     docker:
       - image: node:18-slim
@@ -45,7 +48,8 @@ jobs:
       - run: pnpm run start:upload-zstd
       - run: pnpm run start:restore-zstd
   lz4-chunker:
-    resource_class: large
+    resource_class: "arm.large"
+    working_directory: /mnt/ramdisk
     parallelism: 4
     docker:
       - image: node:18-slim
@@ -60,7 +64,8 @@ jobs:
       - run: pnpm run start:upload-lz4
       - run: pnpm run start:restore-lz4
   circleci:
-    resource_class: large
+    resource_class: "arm.large"
+    working_directory: /mnt/ramdisk
     parallelism: 4
     docker:
       - image: node:18-slim
@@ -86,6 +91,3 @@ workflows:
       - zstd-chunker
       - lz4-chunker
       - circleci
-      # - circleci:
-      #     requires:
-      #       - zstd
