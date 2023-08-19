@@ -14,10 +14,10 @@ jobs:
         type: string
     docker:
       - image: node:18-slim
-  environment:
-    - THREADS: << parameters.threads >>
-    - LONG: << parameters.long >>
-    - SPEED: << parameters.speed >>
+    environment:
+      THREADS: << parameters.threads >>
+      LONG: << parameters.long >>
+      SPEED: << parameters.speed >>
     steps:
       - run: npm install pnpm -g
       - run: apt-get update && apt-get install -y curl git openssh-client mbuffer tar zstd lz4 rclone
@@ -64,9 +64,6 @@ workflows:
               threads:
                 - "--threads=0"
                 - "--threads=1"
-                - "--threads=2"
-                - "--threads=3"
-                - "--threads=4"
               long:
                 - "--long"
                 - ""
@@ -100,14 +97,4 @@ workflows:
                 - "--ultra -20"
                 - "--ultra -21"
                 - "--ultra -22"
-                - "--fast=10"
-                - "--fast=9"
-                - "--fast=8"
-                - "--fast=7"
-                - "--fast=6"
-                - "--fast=5"
-                - "--fast=4"
-                - "--fast=3"
-                - "--fast=2"
-                - "--fast=1"
       - circleci
