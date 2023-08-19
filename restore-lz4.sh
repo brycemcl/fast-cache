@@ -12,7 +12,7 @@ rclone cat \
   --streaming-upload-cutoff=100Ki \
   --transfers=40 \
   --use-mmap \
-  "cache:fast-cache/$CIRCLE_JOB-$CIRCLE_BUILD_NUM.tar.lz4" |
+  cache:fast-cache/$($CIRCLE_JOB)-$($CIRCLE_BUILD_NUM).tar.lz4 |
   mbuffer -s 1M -m 512M |
   lz4 -dc - |
   mbuffer -s 1M -m 512M |
