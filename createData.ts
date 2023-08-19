@@ -16,7 +16,7 @@ const timeStart = Date.now()
         return i
       })) {
         if (amountDone % 10000 === 0) {
-        console.log(`${(Date.now() - timeStart) / 1000} seconds, ${(amountDone / amount) * 100}% started & ${amountDone} files`)
+        console.log(`${(Date.now() - timeStart) / 1000} seconds, ${(amountDone / amount) * 100}% written to disk & ${amountDone} files`)
         }
       }
     })
