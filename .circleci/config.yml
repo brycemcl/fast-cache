@@ -100,7 +100,7 @@ jobs:
 workflows:
   comparison:
     jobs:
-      - zstd-batch
+      # - zstd-batch # this is just slow
       - zstd
       - lz4
       - zstd-chunker
