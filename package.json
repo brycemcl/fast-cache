@@ -6,6 +6,7 @@
     "start": "pnpm run start:createData && pnpm run start:upload && pnpm run start:restore",
     "start:upload-lz4": "./upload-lz4.sh",
     "start:restore-lz4": "./restore-lz4.sh",
+    "start:upload-zstd-batch": "./upload-zstd-batch.sh",
     "start:upload-zstd": "./upload-zstd.sh",
     "start:restore-zstd": "./restore-zstd.sh",
     "start:createData": "tsx createData.ts"

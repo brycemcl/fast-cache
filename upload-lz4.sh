@@ -2,9 +2,7 @@
 set -e
 start=$(date +%s)
 tar -c ./node_modules/uploads/ |
-  mbuffer -s 1M -m 512M |
   lz4 -z - |
-  mbuffer -s 1M -m 512M |
   rclone rcat \
     --buffer-size=16Mi \
     --checkers=16 \

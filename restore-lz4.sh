@@ -13,9 +13,7 @@ rclone cat \
   --transfers=40 \
   --use-mmap \
   "cache:fast-cache/$CIRCLE_JOB-$CIRCLE_BUILD_NUM-$CIRCLE_NODE_INDEX.tar.lz4" |
-  mbuffer -s 1M -m 512M |
   lz4 -dc - |
-  mbuffer -s 1M -m 512M |
   tar -xf - -C tmp/
 end=$(date +%s)
 runtime=$((end - start))
