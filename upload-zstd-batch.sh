@@ -25,14 +25,10 @@ upload_batch() {
     tar -c --files-from - |
     zstdmt --fast=5 - |
     rclone rcat \
-      --buffer-size=16Mi \
-      --checkers=16 \
       --fast-list \
       --ignore-checksum \
-      --streaming-upload-cutoff=100Ki \
-      --transfers=40 \
+      --streaming-upload-cutoff=100Mi \
       --use-mmap \
-      --progress \
       "cache:fast-cache/$CIRCLE_JOB-$CIRCLE_BUILD_NUM-$CIRCLE_NODE_INDEX/$batch_name.tar.zstdmt"
 }
 
@@ -56,7 +52,6 @@ batch_number=0
 find ./node_modules/uploads -type f | while read -r file; do
   batch=$(((batch_number) % NUM_BATCHES))
   echo "$file" >"batch-$batch.pipe"
-  # echo "$file $batch $batch_number"
   batch_number=$((batch_number + 1))
 done
 

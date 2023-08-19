@@ -4,7 +4,7 @@ jobs:
   zstd-batch:
     resource_class: "arm.large"
     working_directory: /mnt/ramdisk
-    # parallelism: 1
+    parallelism: 5
     docker:
       - image: node:18-slim
     steps:
@@ -18,7 +18,7 @@ jobs:
   zstd:
     resource_class: "arm.large"
     working_directory: /mnt/ramdisk
-    # parallelism: 1
+    parallelism: 5
     docker:
       - image: node:18-slim
     steps:
@@ -33,7 +33,7 @@ jobs:
   lz4:
     resource_class: "arm.large"
     working_directory: /mnt/ramdisk
-    # parallelism: 1
+    parallelism: 5
     docker:
       - image: node:18-slim
     steps:
@@ -48,7 +48,7 @@ jobs:
   zstd-chunker:
     resource_class: "arm.large"
     working_directory: /mnt/ramdisk
-    # parallelism: 1
+    parallelism: 5
     docker:
       - image: node:18-slim
     steps:
@@ -64,7 +64,7 @@ jobs:
   lz4-chunker:
     resource_class: "arm.large"
     working_directory: /mnt/ramdisk
-    # parallelism: 1
+    parallelism: 5
     docker:
       - image: node:18-slim
     steps:
@@ -80,7 +80,7 @@ jobs:
   circleci:
     resource_class: "arm.large"
     working_directory: /mnt/ramdisk
-    # parallelism: 1
+    parallelism: 5
     docker:
       - image: node:18-slim
     steps:
@@ -100,9 +100,9 @@ jobs:
 workflows:
   comparison:
     jobs:
-      # - zstd-batch
+      - zstd-batch
       - zstd
       - lz4
-      # - zstd-chunker
-      # - lz4-chunker
+      - zstd-chunker
+      - lz4-chunker
       - circleci
