@@ -12,7 +12,6 @@ tar -c ./node_modules/uploads/ |
     --ignore-checksum \
     --multi-thread-cutoff=250Mi \
     --multi-thread-streams=20 \
-    --multi-thread-write-buffer-size=16Mi \
     --streaming-upload-cutoff=100Ki \
     --transfers=40 \
     --use-mmap
