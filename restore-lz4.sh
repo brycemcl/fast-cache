@@ -9,8 +9,6 @@ rclone cat \
   --checkers=16 \
   --fast-list \
   --ignore-checksum \
-  --multi-thread-cutoff=250Mi \
-  --multi-thread-streams=20 \
   --streaming-upload-cutoff=100Ki \
   --transfers=40 \
   --use-mmap

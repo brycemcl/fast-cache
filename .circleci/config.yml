@@ -8,7 +8,7 @@ jobs:
       - image: node:18-slim
     steps:
       - run: npm install pnpm -g
-      - run: apt-get update && apt-get install -y curl mbuffer tar zstd rclone
+      - run: apt-get update && apt-get install -y curl git openssh-client mbuffer tar zstd rclone
       - run: rclone config create gcs "google cloud storage" location=us-east1 bucket_policy_only=true env_auth=true
       - run: rclone config create cache "chunker" remote=cache:fast-cache/ chunk_size=1Mi hash_type=none
       - checkout
@@ -23,7 +23,7 @@ jobs:
       - image: node:18-slim
     steps:
       - run: npm install pnpm -g
-      - run: apt-get update && apt-get install -y curl mbuffer tar lz4 rclone
+      - run: apt-get update && apt-get install -y curl git openssh-client mbuffer tar lz4 rclone
       - run: rclone config create gcs "google cloud storage" location=us-east1 bucket_policy_only=true env_auth=true
       - run: rclone config create cache "chunker" remote=cache:fast-cache/ chunk_size=1Mi hash_type=none
       - checkout
