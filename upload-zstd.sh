@@ -2,7 +2,7 @@
 set -e
 start=$(date +%s)
 tar -c ./node_modules/ |
-  zstdmt --fast=5 - |
+  zstdmt "$SPEED" "$LONG" "$THEADS" - |
   rclone rcat \
     --buffer-size=16Mi \
     --checkers=16 \
@@ -11,7 +11,7 @@ tar -c ./node_modules/ |
     --streaming-upload-cutoff=100Ki \
     --transfers=40 \
     --use-mmap \
-    "cache:fast-cache/$CIRCLE_JOB-$CIRCLE_BUILD_NUM-$CIRCLE_NODE_INDEX.tar.zstdmt"
+    "cache:fast-cache/$CIRCLE_JOB-$CIRCLE_BUILD_NUM-$CIRCLE_NODE_INDEX-$SPEED-$LONG-$THEADS.tar.zstdmt"
 end=$(date +%s)
 runtime=$((end - start))
 echo "Upload: $runtime seconds"
