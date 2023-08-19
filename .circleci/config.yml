@@ -41,6 +41,7 @@ jobs:
       - image: node:18-slim
     steps:
       - run: npm install pnpm -g
+      - run: apt-get update && apt-get install -y curl git openssh-client mbuffer tar zstd lz4 rclone
       - checkout
       - run: pnpm install
       - run: pnpm install --ignore-scripts bloater
@@ -58,9 +59,5 @@ workflows:
   comparison:
     jobs:
       - lz4
-      - zstd:
-          requires:
-            - lz4
-      - circleci:
-          requires:
-            - zstd
+      - zstd
+      - circleci
