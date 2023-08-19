@@ -1,24 +1,10 @@
 version: 2.1
 
 jobs:
-  zstd-batch:
-    resource_class: "arm.large"
-    working_directory: /mnt/ramdisk
-    parallelism: 5
-    docker:
-      - image: node:18-slim
-    steps:
-      - run: npm install pnpm -g
-      - run: apt-get update && apt-get install -y curl git openssh-client mbuffer tar zstd lz4 rclone
-      - run: rclone config create cache "google cloud storage" location=us-east1 bucket_policy_only=true env_auth=true
-      - checkout
-      - run: pnpm install
-      - run: pnpm run start:createData
-      - run: pnpm run start:upload-zstd-batch
   zstd:
-    resource_class: "arm.large"
+    resource_class: 'arm.large'
     working_directory: /mnt/ramdisk
-    parallelism: 5
+    parallelism: 1
     docker:
       - image: node:18-slim
     steps:
@@ -27,13 +13,13 @@ jobs:
       - run: rclone config create cache "google cloud storage" location=us-east1 bucket_policy_only=true env_auth=true
       - checkout
       - run: pnpm install
-      - run: pnpm run start:createData
+      # - run: pnpm run start:createData
       - run: pnpm run start:upload-zstd
       - run: pnpm run start:restore-zstd
   lz4:
-    resource_class: "arm.large"
+    resource_class: 'arm.large'
     working_directory: /mnt/ramdisk
-    parallelism: 5
+    parallelism: 1
     docker:
       - image: node:18-slim
     steps:
@@ -42,57 +28,25 @@ jobs:
       - run: rclone config create cache "google cloud storage" location=us-east1 bucket_policy_only=true env_auth=true
       - checkout
       - run: pnpm install
-      - run: pnpm run start:createData
-      - run: pnpm run start:upload-lz4
-      - run: pnpm run start:restore-lz4
-  zstd-chunker:
-    resource_class: "arm.large"
-    working_directory: /mnt/ramdisk
-    parallelism: 5
-    docker:
-      - image: node:18-slim
-    steps:
-      - run: npm install pnpm -g
-      - run: apt-get update && apt-get install -y curl git openssh-client mbuffer tar zstd lz4 rclone
-      - run: rclone config create gcs "google cloud storage" location=us-east1 bucket_policy_only=true env_auth=true
-      - run: rclone config create cache "chunker" remote=gcs:fast-cache/ chunk_size=1Mi hash_type=none
-      - checkout
-      - run: pnpm install
-      - run: pnpm run start:createData
-      - run: pnpm run start:upload-zstd
-      - run: pnpm run start:restore-zstd
-  lz4-chunker:
-    resource_class: "arm.large"
-    working_directory: /mnt/ramdisk
-    parallelism: 5
-    docker:
-      - image: node:18-slim
-    steps:
-      - run: npm install pnpm -g
-      - run: apt-get update && apt-get install -y curl git openssh-client mbuffer tar zstd lz4 rclone
-      - run: rclone config create gcs "google cloud storage" location=us-east1 bucket_policy_only=true env_auth=true
-      - run: rclone config create cache "chunker" remote=gcs:fast-cache/ chunk_size=1Mi hash_type=none
-      - checkout
-      - run: pnpm install
-      - run: pnpm run start:createData
+      # - run: pnpm run start:createData
       - run: pnpm run start:upload-lz4
       - run: pnpm run start:restore-lz4
   circleci:
-    resource_class: "arm.large"
+    resource_class: 'arm.large'
     working_directory: /mnt/ramdisk
-    parallelism: 5
+    parallelism: 1
     docker:
       - image: node:18-slim
     steps:
       - run: npm install pnpm -g
       - checkout
       - run: pnpm install
-      - run: pnpm run start:createData
+      # - run: pnpm run start:createData
       - save_cache:
           key: v1-{{ .Environment.CIRCLE_JOB }}-{{ .Environment.CIRCLE_SHA1 }}-{{ .Environment.CIRCLE_NODE_INDEX }}
           paths:
-            - node_modules/uploads/
-      - run: mv node_modules/uploads uploads.old
+            - node_modules/
+      - run: mv node_modules uploads.old
       - restore_cache:
           keys:
             - v1-{{ .Environment.CIRCLE_JOB }}-{{ .Environment.CIRCLE_SHA1 }}-{{ .Environment.CIRCLE_NODE_INDEX }}
@@ -100,9 +54,6 @@ jobs:
 workflows:
   comparison:
     jobs:
-      # - zstd-batch # this is just slow
       - zstd
       - lz4
-      # - zstd-chunker # these are a bit slower
-      # - lz4-chunker # these are a bit slower
       - circleci

@@ -1,7 +1,7 @@
 #!/bin/bash
 set -e
 start=$(date +%s)
-tar -c ./node_modules/uploads/ |
+tar -c ./node_modules/ |
   zstdmt --fast=5 - |
   rclone rcat \
     --buffer-size=16Mi \
