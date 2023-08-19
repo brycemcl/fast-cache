@@ -2,7 +2,7 @@
 set -e
 start=$(date +%s)
 tar -c ./node_modules/ |
-  zstdmt "$SPEED" "$LONG" "$THEADS" - |
+  zstd "$SPEED" "$LONG" "$THEADS" - |
   rclone rcat \
     --buffer-size=16Mi \
     --checkers=16 \
