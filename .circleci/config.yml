@@ -100,9 +100,9 @@ jobs:
 workflows:
   comparison:
     jobs:
-      # - zstd-batch
-      # - zstd
-      # - lz4
-      # - zstd-chunker
-      # - lz4-chunker
+      - zstd-batch
+      - zstd
+      - lz4
+      - zstd-chunker
+      - lz4-chunker
       - circleci
