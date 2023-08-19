@@ -71,7 +71,6 @@ workflows:
                 - "--fast=3"
                 - "--fast=2"
                 - "--fast=1"
-                - "--fast=0"
                 - "--adapt"
                 - "-1"
                 - "-2"
