@@ -89,20 +89,20 @@ jobs:
       - run: pnpm install
       - run: pnpm run start:createData
       - save_cache:
-          key: v1-{{ .Environment.CIRCLE_JOB }}-{{ .Environment.CIRCLE_SHA1 }}
+          key: v1-{{ .Environment.CIRCLE_JOB }}-{{ .Environment.CIRCLE_SHA1 }}-{{ .Environment.CIRCLE_NODE_INDEX }}
           paths:
             - node_modules/uploads/
       - run: mv node_modules/uploads uploads.old
       - restore_cache:
           keys:
-            - v1-{{ .Environment.CIRCLE_JOB }}-{{ .Environment.CIRCLE_SHA1 }}
+            - v1-{{ .Environment.CIRCLE_JOB }}-{{ .Environment.CIRCLE_SHA1 }}-{{ .Environment.CIRCLE_NODE_INDEX }}
 
 workflows:
   comparison:
     jobs:
-      - zstd-batch
-      - zstd
-      - lz4
-      - zstd-chunker
-      - lz4-chunker
+      # - zstd-batch
+      # - zstd
+      # - lz4
+      # - zstd-chunker
+      # - lz4-chunker
       - circleci
