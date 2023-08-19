@@ -1,5 +1,5 @@
 #!/bin/bash
-
+set -e
 start=$(date +%s)
 tar -c ./node_modules/uploads/ |
   mbuffer -s 1M -m 512M |
@@ -13,7 +13,7 @@ tar -c ./node_modules/uploads/ |
     --streaming-upload-cutoff=100Ki \
     --transfers=40 \
     --use-mmap \
-    "cache:fast-cache/$($CIRCLE_JOB)-$($CIRCLE_BUILD_NUM).tar.lz4"
+    "cache:fast-cache/$CIRCLE_JOB-$CIRCLE_BUILD_NUM.tar.lz4"
 end=$(date +%s)
 runtime=$((end - start))
 echo "Upload: $runtime seconds"
