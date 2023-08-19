@@ -12,7 +12,7 @@ rclone cat \
   --streaming-upload-cutoff=100Ki \
   --transfers=40 \
   --use-mmap \
-  cache:fast-cache/$(date +%Y-%m-%d).tar.zstdmt |
+  "cache:fast-cache/$CIRCLE_JOB-$CIRCLE_BUILD_NUM.tar.zstdmt" |
   mbuffer -s 1M -m 512M |
   zstdmt -d - |
   mbuffer -s 1M -m 512M |
