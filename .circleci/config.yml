@@ -103,6 +103,6 @@ workflows:
       # - zstd-batch # this is just slow
       - zstd
       - lz4
-      - zstd-chunker
-      - lz4-chunker
+      # - zstd-chunker # these are a bit slower
+      # - lz4-chunker # these are a bit slower
       - circleci

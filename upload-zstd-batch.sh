@@ -25,9 +25,12 @@ upload_batch() {
     tar -c --files-from - |
     zstdmt --fast=5 - |
     rclone rcat \
+      --buffer-size=16Mi \
+      --checkers=16 \
       --fast-list \
       --ignore-checksum \
-      --streaming-upload-cutoff=5Gi \
+      --streaming-upload-cutoff=100Ki \
+      --transfers=40 \
       --use-mmap \
       "cache:fast-cache/$CIRCLE_JOB-$CIRCLE_BUILD_NUM-$CIRCLE_NODE_INDEX/$batch_name.tar.zstdmt"
 }
