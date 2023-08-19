@@ -3,7 +3,7 @@ version: 2.1
 jobs:
   zstd:
     resource_class: large
-    # working_directory: /mnt/ramdisk
+    parallelism: 4
     docker:
       - image: node:18-slim
     steps:
@@ -17,7 +17,7 @@ jobs:
       - run: pnpm run start:restore-zstd
   lz4:
     resource_class: large
-    # working_directory: /mnt/ramdisk
+    parallelism: 4
     docker:
       - image: node:18-slim
     steps:
@@ -31,7 +31,7 @@ jobs:
       - run: pnpm run start:restore-lz4
   zstd-chunker:
     resource_class: large
-    # working_directory: /mnt/ramdisk
+    parallelism: 4
     docker:
       - image: node:18-slim
     steps:
@@ -46,7 +46,7 @@ jobs:
       - run: pnpm run start:restore-zstd
   lz4-chunker:
     resource_class: large
-    # working_directory: /mnt/ramdisk
+    parallelism: 4
     docker:
       - image: node:18-slim
     steps:
@@ -61,7 +61,7 @@ jobs:
       - run: pnpm run start:restore-lz4
   circleci:
     resource_class: large
-    # working_directory: /mnt/ramdisk
+    parallelism: 4
     docker:
       - image: node:18-slim
     steps:

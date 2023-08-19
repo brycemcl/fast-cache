@@ -2,7 +2,7 @@ import { writeFile, mkdir } from 'fs/promises'
 import path from 'path'
 import asyncPool from 'tiny-async-pool'
 const folders = 100
-const amount = folders * 50000
+const amount = folders * 20000
 const timeStart = Date.now()
 ;(async () => {
   await mkdir('node_modules/uploads')
