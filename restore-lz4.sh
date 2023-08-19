@@ -11,8 +11,8 @@ rclone cat \
   --ignore-checksum \
   --streaming-upload-cutoff=100Ki \
   --transfers=40 \
-  --use-mmap
-cache:fast-cache/$(date +%Y-%m-%d).tar.lz4 |
+  --use-mmap \
+  cache:fast-cache/$(date +%Y-%m-%d).tar.lz4 |
   mbuffer -s 1M -m 512M |
   lz4 -dc - |
   mbuffer -s 1M -m 512M |

@@ -12,8 +12,8 @@ tar -c ./node_modules/uploads/ |
     --ignore-checksum \
     --streaming-upload-cutoff=100Ki \
     --transfers=40 \
-    --use-mmap
-cache:fast-cache/$(date +%Y-%m-%d).tar.lz4
+    --use-mmap \
+    cache:fast-cache/$(date +%Y-%m-%d).tar.lz4
 end=$(date +%s)
 runtime=$((end - start))
 echo "Upload: $runtime seconds"

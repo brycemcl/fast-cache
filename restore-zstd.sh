@@ -11,8 +11,8 @@ rclone cat \
   --ignore-checksum \
   --streaming-upload-cutoff=100Ki \
   --transfers=40 \
-  --use-mmap
-cache:fast-cache/$(date +%Y-%m-%d).tar.zstdmt |
+  --use-mmap \
+  cache:fast-cache/$(date +%Y-%m-%d).tar.zstdmt |
   mbuffer -s 1M -m 512M |
   zstdmt -d - |
   mbuffer -s 1M -m 512M |
