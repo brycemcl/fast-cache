@@ -5,7 +5,18 @@ tar -c ./node_modules/uploads/ |
   mbuffer -s 1M -m 512M |
   lz4 -z - |
   mbuffer -s 1M -m 512M |
-  rclone rcat --transfers=120 --checkers=120 --fast-list --multi-thread-streams=20 --multi-thread-cutoff=5M --ignore-checksum cache:fast-cache/$(date +%Y-%m-%d).tar.lz4
+  rclone rcat \
+    --buffer-size=16Mi \
+    --checkers=16 \
+    --fast-list \
+    --ignore-checksum \
+    --multi-thread-cutoff=250Mi \
+    --multi-thread-streams=20 \
+    --multi-thread-write-buffer-size=16Mi \
+    --streaming-upload-cutoff=100Ki \
+    --transfers=40 \
+    --use-mmap
+cache:fast-cache/$(date +%Y-%m-%d).tar.lz4
 end=$(date +%s)
 runtime=$((end - start))
 echo "Upload: $runtime seconds"
