@@ -9,6 +9,34 @@ jobs:
     steps:
       - run: npm install pnpm -g
       - run: apt-get update && apt-get install -y curl git openssh-client mbuffer tar zstd rclone
+      - run: rclone config create cache "google cloud storage" location=us-east1 bucket_policy_only=true env_auth=true
+      - checkout
+      - run: pnpm install
+      - run: pnpm run start:createData
+      - run: pnpm run start:upload-zstd
+      - run: pnpm run start:restore-zstd
+  lz4:
+    resource_class: large
+    working_directory: /mnt/ramdisk
+    docker:
+      - image: node:18-slim
+    steps:
+      - run: npm install pnpm -g
+      - run: apt-get update && apt-get install -y curl git openssh-client mbuffer tar lz4 rclone
+      - run: rclone config create cache "google cloud storage" location=us-east1 bucket_policy_only=true env_auth=true
+      - checkout
+      - run: pnpm install
+      - run: pnpm run start:createData
+      - run: pnpm run start:upload-lz4
+      - run: pnpm run start:restore-lz4
+  zstd-chunker:
+    resource_class: large
+    working_directory: /mnt/ramdisk
+    docker:
+      - image: node:18-slim
+    steps:
+      - run: npm install pnpm -g
+      - run: apt-get update && apt-get install -y curl git openssh-client mbuffer tar zstd rclone
       - run: rclone config create gcs "google cloud storage" location=us-east1 bucket_policy_only=true env_auth=true
       - run: rclone config create cache "chunker" remote=gcs:fast-cache/ chunk_size=1Mi hash_type=none
       - checkout
@@ -16,7 +44,7 @@ jobs:
       - run: pnpm run start:createData
       - run: pnpm run start:upload-zstd
       - run: pnpm run start:restore-zstd
-  lz4:
+  lz4-chunker:
     resource_class: large
     working_directory: /mnt/ramdisk
     docker:
@@ -54,8 +82,10 @@ workflows:
   comparison:
     jobs:
       - zstd
-      # - lz4
-      # - circleci
+      - lz4
+      - zstd-chunker
+      - lz4-chunker
+      - circleci
       # - circleci:
       #     requires:
       #       - zstd
