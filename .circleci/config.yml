@@ -121,7 +121,7 @@ workflows:
           matrix:
             parameters:
               threads:
-                - "--threads=1"
+                # - "--threads=1"
                 - "--threads=4"
               long:
                 - "--long"
@@ -136,4 +136,4 @@ workflows:
                 # - "-3"
                 # - "-4"
                 # - "-5"
-      - circleci
+      # - circleci

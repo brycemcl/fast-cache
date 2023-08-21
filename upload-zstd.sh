@@ -15,3 +15,4 @@ tar -c ./node_modules/ |
 end=$(date +%s)
 runtime=$((end - start))
 echo "Upload: $runtime seconds"
+echo "cache:fast-cache/$CIRCLE_JOB-$CIRCLE_BUILD_NUM-$CIRCLE_NODE_INDEX-$SPEED-$LONG-$THEADS.tar.zstdmt"
