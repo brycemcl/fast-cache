@@ -56,7 +56,7 @@ jobs:
       BUFFER_SIZE: << parameters.buffer_size >>
     steps:
       - run: npm install pnpm -g
-      - run: apt-get update && apt-get install -y curl git openssh-client mbuffer tar zstd lz4 rclone
+      - run: apt-get update && apt-get install -y curl git openssh-client mbuffer tar zstd lz4 rclone procps
       - run: rclone config create cache "google cloud storage" location=us-east1 bucket_policy_only=true env_auth=true
       - checkout
       - restore_cache:
