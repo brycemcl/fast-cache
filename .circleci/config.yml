@@ -97,86 +97,30 @@ workflows:
             parameters:
               buffer_size:
                 - "16Mi"
-                # - "1Ki"
               num_pipes:
-                # - 1
-                # - 2
-                # - 3
                 - 4
-                # - 5
               threads:
-                # - "--threads=0"
                 - "--threads=1"
-                # - "--single-thread"
               long:
                 - "--long"
-                # - ""
               speed:
-                - "--fast=5"
-                - "--fast=4"
-                - "--fast=3"
-                - "--fast=2"
-                - "--fast=1"
-                - "--adapt"
-                - "-1"
+                # - "--fast=5"
+                # - "--fast=4"
+                # - "--fast=3"
+                # - "--fast=2"
+                # - "--fast=1"
+                # - "-1"
                 - "-2"
-                - "-3"
-                - "-4"
-                - "-5"
-                - "-6"
-                - "-7"
-                - "-8"
-                - "-9"
-                - "-10"
-                - "-11"
-                - "-12"
-                - "-13"
-                - "-14"
-                - "-15"
-                - "-16"
-                - "-17"
-                - "-18"
-                - "-19"
-                - "--ultra -20"
-                - "--ultra -21"
-                - "--ultra -22"
-      # - zstd:
-      #     matrix:
-      #       parameters:
-      #         threads:
-      #           # - "--threads=0"
-      #           - "--threads=1"
-      #           - "--single-thread"
-      #         long:
-      #           - "--long"
-      #           # - ""
-      #         speed:
-      #           # - "--fast=5"
-      #           # - "--fast=4"
-      #           # - "--fast=3"
-      #           # - "--fast=2"
-      #           # - "--fast=1"
-      #           # - "--adapt"
-      #           # - "-1"
-      #           # - "-2"
-      #           - "-3"
-      #           # - "-4"
-      #           # - "-5"
-      #           # - "-6"
-      #           # - "-7"
-      #           # - "-8"
-      #           # - "-9"
-      #           # - "-10"
-      #           # - "-11"
-      #           # - "-12"
-      #           # - "-13"
-      #           # - "-14"
-      #           # - "-15"
-      #           # - "-16"
-      #           # - "-17"
-      #           # - "-18"
-      #           # - "-19"
-      #           # - "--ultra -20"
-      #           # - "--ultra -21"
-      #           # - "--ultra -22"
-      # - circleci
+                # - "-3"
+                # - "-4"
+                # - "-5"
+      - zstd:
+          matrix:
+            parameters:
+              threads:
+                - "--threads=1"
+              long:
+                - "--long"
+              speed:
+                - "-2"
+      - circleci
