@@ -31,6 +31,42 @@ jobs:
       - run: pnpm run start:createData
       - run: pnpm run start:upload-zstd
       - run: pnpm run start:restore-zstd
+  zstd-batch:
+    resource_class: 'arm.large'
+    # working_directory: /mnt/ramdisk
+    # parallelism: 1
+    parameters:
+      speed:
+        type: string
+      long:
+        type: string
+      threads:
+        type: string
+      num_pipes:
+        type: integer
+      buffer_size:
+        type: string
+    docker:
+      - image: node:18-slim
+    environment:
+      THREADS: << parameters.threads >>
+      LONG: << parameters.long >>
+      SPEED: << parameters.speed >>
+      NUM_PIPES: << parameters.num_pipes >>
+      BUFFER_SIZE: << parameters.buffer_size >>
+    steps:
+      - run: npm install pnpm -g
+      - run: apt-get update && apt-get install -y curl git openssh-client mbuffer tar zstd lz4 rclone
+      - run: rclone config create cache "google cloud storage" location=us-east1 bucket_policy_only=true env_auth=true
+      - checkout
+      - restore_cache:
+          keys:
+            - v1-circleci-9eec7f6e932cc7a99fa56eddd82cf8e519094922-0
+      # - run: pnpm install
+      # - run: pnpm install --ignore-scripts bloater
+      # - run: pnpm run start:createData
+      - run: pnpm run start:upload-zstd-batch
+      # - run: pnpm run start:restore-zstd
   circleci:
     resource_class: 'arm.large'
     # working_directory: /mnt/ramdisk
@@ -56,17 +92,27 @@ jobs:
 workflows:
   comparison:
     jobs:
-      - zstd:
+      - zstd-batch:
           matrix:
             parameters:
+              buffer_size:
+                - "16Mi"
+                - "1Ki"
+              num_pipes:
+                - 1
+                - 2
+                - 3
+                - 4
+                - 5
               threads:
-                - "--threads=0"
+                # - "--threads=0"
                 - "--threads=1"
+                - "--single-thread"
               long:
                 - "--long"
                 - ""
               speed:
-                - "--fast=5"
+                # - "--fast=5"
                 # - "--fast=4"
                 # - "--fast=3"
                 # - "--fast=2"
@@ -94,4 +140,43 @@ workflows:
                 # - "--ultra -20"
                 # - "--ultra -21"
                 # - "--ultra -22"
-      - circleci
+      # - zstd:
+      #     matrix:
+      #       parameters:
+      #         threads:
+      #           # - "--threads=0"
+      #           - "--threads=1"
+      #           - "--single-thread"
+      #         long:
+      #           - "--long"
+      #           # - ""
+      #         speed:
+      #           # - "--fast=5"
+      #           # - "--fast=4"
+      #           # - "--fast=3"
+      #           # - "--fast=2"
+      #           # - "--fast=1"
+      #           # - "--adapt"
+      #           # - "-1"
+      #           # - "-2"
+      #           - "-3"
+      #           # - "-4"
+      #           # - "-5"
+      #           # - "-6"
+      #           # - "-7"
+      #           # - "-8"
+      #           # - "-9"
+      #           # - "-10"
+      #           # - "-11"
+      #           # - "-12"
+      #           # - "-13"
+      #           # - "-14"
+      #           # - "-15"
+      #           # - "-16"
+      #           # - "-17"
+      #           # - "-18"
+      #           # - "-19"
+      #           # - "--ultra -20"
+      #           # - "--ultra -21"
+      #           # - "--ultra -22"
+      # - circleci
