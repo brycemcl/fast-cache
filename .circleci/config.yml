@@ -23,12 +23,12 @@ jobs:
       - run: apt-get update && apt-get install -y curl git openssh-client mbuffer tar zstd lz4 rclone
       - run: rclone config create cache "google cloud storage" location=us-east1 bucket_policy_only=true env_auth=true
       - checkout
-      # - restore_cache:
-      #     keys:
-      #       - v1-circleci-9eec7f6e932cc7a99fa56eddd82cf8e519094922-0
+      - restore_cache:
+          keys:
+            - v1-circleci-9eec7f6e932cc7a99fa56eddd82cf8e519094922-0
       - run: pnpm install
       # - run: pnpm install --ignore-scripts bloater
-      - run: pnpm run start:createData
+      # - run: pnpm run start:createData
       - run: pnpm run start:upload-zstd
       - run: pnpm run start:restore-zstd
   zstd-batch:
@@ -125,14 +125,14 @@ workflows:
               long:
                 - "--long"
               speed:
-                - "--fast=5"
-                - "--fast=4"
-                - "--fast=3"
-                - "--fast=2"
-                - "--fast=1"
-                - "-1"
+                # - "--fast=5"
+                # - "--fast=4"
+                # - "--fast=3"
+                # - "--fast=2"
+                # - "--fast=1"
+                # - "-1"
                 - "-2"
-                - "-3"
-                - "-4"
-                - "-5"
-      # - circleci
+                # - "-3"
+                # - "-4"
+                # - "-5"
+      - circleci
