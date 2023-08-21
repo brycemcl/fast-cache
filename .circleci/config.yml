@@ -77,9 +77,12 @@ jobs:
       - run: npm install pnpm -g
       - run: apt-get update && apt-get install -y curl git openssh-client mbuffer tar zstd lz4 rclone
       - checkout
-      - run: pnpm install
+      # - run: pnpm install
       # - run: pnpm install --ignore-scripts bloater
-      - run: pnpm run start:createData
+      # - run: pnpm run start:createData
+      - restore_cache:
+          keys:
+            - v1-circleci-9eec7f6e932cc7a99fa56eddd82cf8e519094922-0
       - save_cache:
           key: v1-{{ .Environment.CIRCLE_JOB }}-{{ .Environment.CIRCLE_SHA1 }}-{{ .Environment.CIRCLE_NODE_INDEX }}
           paths:
