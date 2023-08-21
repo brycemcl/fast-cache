@@ -52,7 +52,7 @@ done
 
 # Write find output to named pipes round-robin using a loop and print0
 index=1
-find ./node_modules/uploads/ -type f -print0 | while IFS= read -r -d $'\0' file; do
+find ./node_modules/ -type f -print0 | while IFS= read -r -d $'\0' file; do
   echo "$file" >"pipe$index"
   ((index++))
   if [ $index -gt $NUM_PIPES ]; then
