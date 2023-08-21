@@ -95,28 +95,28 @@ jobs:
 workflows:
   comparison:
     jobs:
-      # - zstd-batch:
-      #     matrix:
-      #       parameters:
-      #         buffer_size:
-      #           - "16Mi"
-      #         num_pipes:
-      #           - 4
-      #         threads:
-      #           - "--threads=1"
-      #         long:
-      #           - "--long"
-      #         speed:
-      #           # - "--fast=5"
-      #           # - "--fast=4"
-      #           # - "--fast=3"
-      #           # - "--fast=2"
-      #           # - "--fast=1"
-      #           # - "-1"
-      #           - "-2"
-      #           # - "-3"
-      #           # - "-4"
-      #           # - "-5"
+      - zstd-batch:
+          matrix:
+            parameters:
+              buffer_size:
+                - "16Mi"
+              num_pipes:
+                - 4
+              threads:
+                - "--threads=1"
+              long:
+                - "--long"
+              speed:
+                # - "--fast=5"
+                # - "--fast=4"
+                # - "--fast=3"
+                # - "--fast=2"
+                # - "--fast=1"
+                # - "-1"
+                - "-2"
+                # - "-3"
+                # - "-4"
+                # - "-5"
       - zstd:
           matrix:
             parameters:
