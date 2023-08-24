@@ -121,8 +121,8 @@ workflows:
           matrix:
             parameters:
               threads:
-                # - "--threads=1"
-                - "--threads=4"
+                # - "--threads=4"
+                - "--threads=1"
               long:
                 - "--long"
               speed:
