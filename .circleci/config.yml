@@ -19,54 +19,15 @@ jobs:
       LONG: << parameters.long >>
       SPEED: << parameters.speed >>
     steps:
-      - run: npm install pnpm -g
-      - run: apt-get update && apt-get install -y curl git openssh-client mbuffer tar zstd lz4 rclone
+      - run: apt-get update && apt-get install -y git openssh-client
       - run: rclone config create cache "google cloud storage" location=us-east1 bucket_policy_only=true env_auth=true
       - checkout
       - restore_cache:
           keys:
-            - v1-circleci-9eec7f6e932cc7a99fa56eddd82cf8e519094922-0
-      - run: pnpm install
-      # - run: pnpm install --ignore-scripts bloater
-      # - run: pnpm run start:createData
+            - v1-{{ .Environment.CIRCLE_SHA1 }}
+      - run: apt-get install -y tar zstd rclone
       - run: pnpm run start:upload-zstd
       - run: pnpm run start:restore-zstd
-  zstd-batch:
-    resource_class: 'arm.large'
-    # working_directory: /mnt/ramdisk
-    # parallelism: 1
-    parameters:
-      speed:
-        type: string
-      long:
-        type: string
-      threads:
-        type: string
-      num_pipes:
-        type: integer
-      buffer_size:
-        type: string
-    docker:
-      - image: node:18-slim
-    environment:
-      THREADS: << parameters.threads >>
-      LONG: << parameters.long >>
-      SPEED: << parameters.speed >>
-      NUM_PIPES: << parameters.num_pipes >>
-      BUFFER_SIZE: << parameters.buffer_size >>
-    steps:
-      - run: npm install pnpm -g
-      - run: apt-get update && apt-get install -y curl git openssh-client mbuffer tar zstd lz4 rclone procps
-      - run: rclone config create cache "google cloud storage" location=us-east1 bucket_policy_only=true env_auth=true
-      - checkout
-      - restore_cache:
-          keys:
-            - v1-circleci-9eec7f6e932cc7a99fa56eddd82cf8e519094922-0
-      # - run: pnpm install
-      # - run: pnpm install --ignore-scripts bloater
-      # - run: pnpm run start:createData
-      - run: pnpm run start:upload-zstd-batch
-      # - run: pnpm run start:restore-zstd
   circleci:
     resource_class: 'arm.large'
     # working_directory: /mnt/ramdisk
@@ -75,49 +36,26 @@ jobs:
       - image: node:18-slim
     steps:
       - run: npm install pnpm -g
-      - run: apt-get update && apt-get install -y curl git openssh-client mbuffer tar zstd lz4 rclone
+      - run: apt-get update && apt-get install -y git openssh-client
       - checkout
-      # - run: pnpm install
-      # - run: pnpm install --ignore-scripts bloater
-      # - run: pnpm run start:createData
-      - restore_cache:
-          keys:
-            - v1-circleci-9eec7f6e932cc7a99fa56eddd82cf8e519094922-0
+      - run: pnpm install
+      - run: pnpm install --ignore-scripts bloater
+      - run: pnpm run start:createData
       - save_cache:
-          key: v1-{{ .Environment.CIRCLE_JOB }}-{{ .Environment.CIRCLE_SHA1 }}-{{ .Environment.CIRCLE_NODE_INDEX }}
+          key: v1-{{ .Environment.CIRCLE_SHA1 }}
           paths:
             - node_modules/
       - run: mv node_modules uploads.old
       - restore_cache:
           keys:
-            - v1-{{ .Environment.CIRCLE_JOB }}-{{ .Environment.CIRCLE_SHA1 }}-{{ .Environment.CIRCLE_NODE_INDEX }}
+            - v1-{{ .Environment.CIRCLE_SHA1 }}
 
 workflows:
   comparison:
     jobs:
-      # - zstd-batch:
-      #     matrix:
-      #       parameters:
-      #         buffer_size:
-      #           - "16Mi"
-      #         num_pipes:
-      #           - 4
-      #         threads:
-      #           - "--threads=1"
-      #         long:
-      #           - "--long"
-      #         speed:
-      #           # - "--fast=5"
-      #           # - "--fast=4"
-      #           # - "--fast=3"
-      #           # - "--fast=2"
-      #           # - "--fast=1"
-      #           # - "-1"
-      #           - "-2"
-      #           # - "-3"
-      #           # - "-4"
-      #           # - "-5"
       - zstd:
+          requires:
+            - circleci
           matrix:
             parameters:
               threads:
@@ -136,4 +74,4 @@ workflows:
                 # - "-3"
                 # - "-4"
                 # - "-5"
-      # - circleci
+      - circleci
