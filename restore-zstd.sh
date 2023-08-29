@@ -1,7 +1,5 @@
 #!/bin/bash
 set -e
-rm -rf tmp || true
-mkdir tmp || true
 
 start=$(date +%s)
 rclone cat \
