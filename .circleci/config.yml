@@ -2,7 +2,7 @@ version: 2.1
 
 jobs:
   zstd:
-    resource_class: 'arm.large'
+    resource_class: 'small'
     # working_directory: /mnt/ramdisk
     parameters:
       speed:
