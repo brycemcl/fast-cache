@@ -58,7 +58,7 @@ workflows:
           matrix:
             parameters:
               threads:
-                # - "--threads=4"
+                - "--threads=4"
                 - '--threads=1'
               long:
                 - '--long'
