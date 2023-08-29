@@ -9,10 +9,10 @@ rclone cat \
   --ignore-checksum \
   --transfers=40 \
   --use-mmap \
-  "cache:fast-cache/$CIRCLE_JOB-$CIRCLE_BUILD_NUM-$CIRCLE_NODE_INDEX-$SPEED-$LONG-$THEADS.tar.zstdmt" |
+  "cache:fast-cache/$CIRCLE_JOB-$CIRCLE_BUILD_NUM-$CIRCLE_NODE_INDEX-$SPEED-$LONG-$THEADS.tar.zstd" |
   zstd -d - |
   tar -xf - -C tmp/
 end=$(date +%s)
 runtime=$((end - start))
 echo "Restore: $runtime seconds"
-echo "cache:fast-cache/$CIRCLE_JOB-$CIRCLE_BUILD_NUM-$CIRCLE_NODE_INDEX-$SPEED-$LONG-$THEADS.tar.zstdmt"
+echo "cache:fast-cache/$CIRCLE_JOB-$CIRCLE_BUILD_NUM-$CIRCLE_NODE_INDEX-$SPEED-$LONG-$THEADS.tar.zstd"
