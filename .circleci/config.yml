@@ -59,7 +59,7 @@ workflows:
             parameters:
               threads:
                 - "--threads=4"
-                - '--threads=1'
+                # - '--threads=1'
               long:
                 - '--long'
               speed:
