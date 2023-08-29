@@ -1,7 +1,7 @@
 #!/bin/bash
 set -e
 start=$(date +%s)
-tar -c ./node_modules/ |
+tar -cP ./node_modules/ |
   zstd $SPEED $LONG $THEADS - |
   rclone rcat \
     --buffer-size=16Mi \
