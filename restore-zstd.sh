@@ -11,7 +11,7 @@ rclone cat \
   --use-mmap \
   "cache:fast-cache/$CIRCLE_JOB-$CIRCLE_BUILD_NUM-$CIRCLE_NODE_INDEX-$SPEED-$LONG-$THEADS.tar.zstd" |
   zstd -d - |
-  tar -xP
+  tar -xP --skip-old-files
 end=$(date +%s)
 runtime=$((end - start))
 echo "Restore: $runtime seconds"
