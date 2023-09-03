@@ -68,8 +68,9 @@ commands:
 
                 # If an exact match is found
                 if [ -n "$exact_match" ]; then
+                echo $param
                 dirname $param
-                  if [[ dirname $param == "." ]]; then
+                  if dirname $param == "."; then
                     echo "Exact match found: $exact_match"
                     process_cache "$exact_match"
                     return
