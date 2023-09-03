@@ -125,9 +125,12 @@ jobs:
       - save_cache_zstd:
           key: 'v1-<< parameters.working_directory >>-<< pipeline.git.revision >>'
           paths: 'node_modules/'
-      - run: mv node_modules uploads.old
+      - run: rm -fr node_modules
       - restore_cache_zstd:
           keys: 'v1-<< parameters.working_directory >>-<< pipeline.git.revision >>'
+      - run: rm -fr node_modules
+      - restore_cache_zstd:
+          keys: 'v1-<< parameters.working_directory >>'
   circleci:
     parameters:
       working_directory:
@@ -148,7 +151,7 @@ jobs:
           key: v1-<< parameters.working_directory >>-{{ .Environment.CIRCLE_SHA1 }}
           paths:
             - node_modules/
-      - run: mv node_modules uploads.old
+      - run: rm -fr node_modules
       - restore_cache:
           keys:
             - v1-<< parameters.working_directory >>-{{ .Environment.CIRCLE_SHA1 }}
