@@ -12,7 +12,7 @@ commands:
         description: 'List of directories which should be added to the cache'
         type: string
         default: '"/tmp" "node_modules/"'
-      cacheKey:
+      key:
         description: 'Unique identifier for this cache'
         type: string
         default: 'v1-{{ .Environment.CIRCLE_SHA1 }}'
@@ -29,7 +29,7 @@ commands:
       - run:
           name: '{{ .parameters.displayName }}'
           when: '{{ .parameters.when }}'
-          command: pnpm run start:upload-zstd -- "{{ .parameters.cacheKey}}" "{{ .parameters.paths}}"
+          command: pnpm run start:upload-zstd -- "{{ .parameters.key}}" "{{ .parameters.paths}}"
 
 jobs:
   zstd:
