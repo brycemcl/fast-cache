@@ -5,7 +5,7 @@ commands:
       paths:
         description: 'List of directories which should be added to the cache'
         type: string
-        default: '"/tmp" "node_modules/"'
+        # default: '"/tmp" "node_modules/"'
       key:
         description: 'Unique identifier for this cache'
         type: string
