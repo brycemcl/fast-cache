@@ -35,7 +35,7 @@ jobs:
       - checkout
       - restore_cache:
           keys:
-            - v1-{{ .Environment.CIRCLE_SHA1 }}
+            - v1-
       - run: apt-get install -y tar zstd rclone
       - run: rclone config create cache "google cloud storage" location=us-east1 bucket_policy_only=true env_auth=true
       - run: npm install pnpm -g
@@ -64,12 +64,13 @@ jobs:
       - run: mv node_modules uploads.old
       - restore_cache:
           keys:
-            - v1-{{ .Environment.CIRCLE_SHA1 }}
+            - v1-
 
 workflows:
   comparison:
     jobs:
-      - zstd:
-          requires:
-            - circleci
+      # - zstd:
+      #     requires:
+      #       - circleci
+      - zstd
       - circleci
