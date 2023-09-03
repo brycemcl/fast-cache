@@ -1,28 +1,34 @@
 version: 2.1
 commands:
+  saywhat:
+    parameters:
+      saywhat:
+        type: string
+    steps:
+      - run: echo "<< parameters.saywhat >>"
   save_cache_zstd:
     parameters:
       paths:
         description: 'List of directories which should be added to the cache'
         type: string
         default: '"/tmp" "node_modules/"'
-      key:
+      cacheKey:
         description: 'Unique identifier for this cache'
         type: string
-        default: v1-{{ .Environment.CIRCLE_SHA1 }}
+        default: 'v1-{{ .Environment.CIRCLE_SHA1 }}'
       displayName:
         description: 'Title of the step to be shown in the CircleCI UI (default: “Saving Cache”)'
         type: string
-        default: Saving Cache
+        default: 'Saving Cache'
       when:
         description: 'Specify when to enable or disable the step. Takes the following values: always, on_success, on_fail (default: on_success)'
-        type: string
+        type: [always, on_success, on_fail]
         default: on_success
     steps:
       - run:
           name: '{{ .parameters.displayName }}'
           when: '{{ .parameters.when }}'
-          command: pnpm run start:upload-zstd -- "{{ .parameters.key}}" "{{ .parameters.paths}}"
+          command: pnpm run start:upload-zstd -- "{{ .parameters.cacheKey}}" "{{ .parameters.paths}}"
 
 jobs:
   zstd:
@@ -41,8 +47,8 @@ jobs:
       - run: npm install pnpm -g
       # - save_cache_zstd
       # - save_cache_zstd:
-        # key: v1-{{ .Environment.CIRCLE_SHA1 }}
-        # paths: 'node_modules/'
+      # key: v1-{{ .Environment.CIRCLE_SHA1 }}
+      # paths: 'node_modules/'
       # - run: pnpm run start:upload-zstd -- "$KEY"
       # - run: pnpm run start:restore-zstd -- 'zstd---long--2'
   circleci:
