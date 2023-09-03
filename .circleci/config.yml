@@ -21,10 +21,9 @@ commands:
       - run:
           name: << parameters.displayName >>
           when: << parameters.when >>
-          environment:
-            KEY: << parameters.key >>
           command: |
             #!/bin/bash
+            KEY=<< parameters.key >>
             echo "Uploading << parameters.paths >> to $KEY"
             set -e
             start=$(date +%s)
@@ -59,7 +58,7 @@ jobs:
       - run: apt-get install -y tar zstd rclone
       - run: rclone config create cache "google cloud storage" location=us-east1 bucket_policy_only=true env_auth=true
       - save_cache_zstd:
-          key: v1-{{ .Environment.CIRCLE_SHA1 }}
+          key: v1-<< environment.CIRCLE_SHA1 >>
           paths: 'node_modules/'
   circleci:
     resource_class: 'arm.large'
@@ -89,4 +88,4 @@ workflows:
       #     requires:
       #       - circleci
       - zstd
-      - circleci
+      # - circleci
