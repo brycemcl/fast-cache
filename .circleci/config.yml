@@ -9,7 +9,7 @@ commands:
       cacheKey:
         description: 'Unique identifier for this cache'
         type: string
-        default: 'v1-{{ .Environment.CIRCLE_SHA1 }}'
+        default: v1-{{ .Environment.CIRCLE_SHA1 }}
       displayName:
         description: 'Title of the step to be shown in the CircleCI UI'
         type: string
@@ -19,7 +19,6 @@ commands:
         type: string
         default: 'on_success'
     steps:
-      - run: npm install pnpm -g
       - run:
           name: << parameters.displayName >>
           when: << parameters.when >>
