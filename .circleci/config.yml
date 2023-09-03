@@ -156,13 +156,12 @@ workflows:
   comparison:
     jobs:
       - zstd
-        matrix:
-          parameters:
+          matrix:
             working_directory:
               - /mnt/ramdisk
               - /root/project
       - circleci:
-          parameters:
+          matrix:
             working_directory:
               - /mnt/ramdisk
               - /root/project
