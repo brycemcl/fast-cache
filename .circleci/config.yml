@@ -42,8 +42,8 @@ jobs:
       - run: npm install pnpm -g
       - save_cache_zstd:
           key: v1-{{ .Environment.CIRCLE_SHA1 }}
-          paths:
-            - node_modules/
+          # paths:
+          #   - node_modules/
       # - run: pnpm run start:upload-zstd -- "$KEY"
       # - run: pnpm run start:restore-zstd -- 'zstd---long--2'
   circleci:
