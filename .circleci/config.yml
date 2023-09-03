@@ -1,22 +1,36 @@
 version: 2.1
+commands:
+  save_cache_zstd:
+    parameters:
+      paths:
+        description: 'List of directories which should be added to the cache'
+        type: list
+        default: ['./']
+      key:
+        description: 'Unique identifier for this cache'
+        type: string
+        default: v1-{{ .Environment.CIRCLE_SHA1 }}
+      name:
+        description: 'Title of the step to be shown in the CircleCI UI (default: “Saving Cache”)'
+        type: string
+        default: Saving Cache
+      when:
+        description: 'Specify when to enable or disable the step. Takes the following values: always, on_success, on_fail (default: on_success)'
+        type: string
+        default: on_success
+    steps:
+      - run:
+        name: { { .parameters.name } }
+        when: { { .parameters.when } }
+        command: |
+          pnpm run start:upload-zstd -- {{ .parameters.key}} {{ .parameters.paths}}
 
 jobs:
   zstd:
     resource_class: 'small'
     # working_directory: /mnt/ramdisk
-    parameters:
-      speed:
-        type: string
-      long:
-        type: string
-      threads:
-        type: string
     docker:
       - image: node:18-slim
-    environment:
-      THREADS: << parameters.threads >>
-      LONG: << parameters.long >>
-      SPEED: << parameters.speed >>
     steps:
       - run: apt-get update && apt-get install -y git openssh-client
       - checkout
@@ -26,8 +40,12 @@ jobs:
       - run: apt-get install -y tar zstd rclone
       - run: rclone config create cache "google cloud storage" location=us-east1 bucket_policy_only=true env_auth=true
       - run: npm install pnpm -g
-      - run: pnpm run start:upload-zstd
-      - run: pnpm run start:restore-zstd
+      - save_cache_zstd:
+          key: v1-{{ .Environment.CIRCLE_SHA1 }}
+          paths:
+            - node_modules/
+      # - run: pnpm run start:upload-zstd -- "$KEY"
+      # - run: pnpm run start:restore-zstd -- 'zstd---long--2'
   circleci:
     resource_class: 'arm.large'
     # working_directory: /mnt/ramdisk
@@ -55,22 +73,4 @@ workflows:
       - zstd:
           requires:
             - circleci
-          matrix:
-            parameters:
-              threads:
-                - "--threads=4"
-                # - '--threads=1'
-              long:
-                - '--long'
-              speed:
-                # - "--fast=5"
-                # - "--fast=4"
-                # - "--fast=3"
-                # - "--fast=2"
-                # - "--fast=1"
-                # - "-1"
-                - '-2'
-                # - "-3"
-                # - "-4"
-                # - "-5"
       - circleci
