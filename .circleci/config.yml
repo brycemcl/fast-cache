@@ -16,14 +16,12 @@ commands:
         default: 'Saving Cache'
       when:
         description: 'Specify when to enable or disable the step. Takes the following values: always, on_success, on_fail (default: on_success)'
-        # type: string
-        type: enum
-        enum: ['always', 'on_success', 'on_fail']
+        type: string
         default: 'on_success'
     steps:
       - run:
-          name: '{{ .parameters.displayName }}'
-          # when: '{{ .parameters.when }}'
+          name: << parameters.displayName >>
+          when: << parameters.when >>
           command: pnpm run start:upload-zstd -- "{{ .parameters.cacheKey}}" "{{ .parameters.paths}}"
 
 jobs:
