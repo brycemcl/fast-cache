@@ -105,7 +105,7 @@ commands:
 jobs:
   zstd:
     resource_class: 'arm.large'
-    # working_directory: /mnt/ramdisk
+    working_directory: /mnt/ramdisk
     docker:
       - image: node:18-slim
     steps:
@@ -120,11 +120,12 @@ jobs:
       - save_cache_zstd:
           key: 'v1-<< pipeline.git.revision >>'
           paths: 'node_modules/'
+      - run: mv node_modules uploads.old
       - restore_cache_zstd:
           keys: 'v1-<< pipeline.git.revision >>'
   circleci:
     resource_class: 'arm.large'
-    # working_directory: /mnt/ramdisk
+    working_directory: /mnt/ramdisk
     docker:
       - image: node:18-slim
     steps:
