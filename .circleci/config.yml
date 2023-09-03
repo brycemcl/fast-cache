@@ -155,7 +155,7 @@ jobs:
 workflows:
   comparison:
     jobs:
-      - zstd
+      - zstd:
           matrix:
             parameters:
               working_directory:
