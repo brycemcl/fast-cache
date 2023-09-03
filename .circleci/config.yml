@@ -22,8 +22,9 @@ commands:
         default: 'Saving Cache'
       when:
         description: 'Specify when to enable or disable the step. Takes the following values: always, on_success, on_fail (default: on_success)'
-        type: enum
-        enum: ['always', 'on_success', 'on_fail']
+        type: string
+        # type: enum
+        # enum: ['always', 'on_success', 'on_fail']
         default: 'on_success'
     steps:
       - run:
@@ -45,7 +46,7 @@ jobs:
             - v1-
       - run: apt-get install -y tar zstd rclone
       - run: rclone config create cache "google cloud storage" location=us-east1 bucket_policy_only=true env_auth=true
-      - run: npm install pnpm -g
+      # - run: npm install pnpm -g
       # - save_cache_zstd
       - save_cache_zstd:
           key: v1-{{ .Environment.CIRCLE_SHA1 }}
