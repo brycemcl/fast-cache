@@ -5,7 +5,7 @@ commands:
       paths:
         description: 'List of directories which should be added to the cache'
         type: list
-        default: ['./']
+        # default: ['./']
       key:
         description: 'Unique identifier for this cache'
         type: string
@@ -20,8 +20,8 @@ commands:
         default: on_success
     steps:
       - run:
-        name: { { .parameters.name } }
-        when: { { .parameters.when } }
+        name: "{{ .parameters.name }}"
+        when: "{{ .parameters.when }}"
         command: |
           pnpm run start:upload-zstd -- {{ .parameters.key}} {{ .parameters.paths}}
 
