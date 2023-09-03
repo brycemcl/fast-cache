@@ -68,9 +68,15 @@ commands:
 
                 # If an exact match is found
                 if [ -n "$exact_match" ]; then
-                  echo "Exact match found: $(dirname $param)/$exact_match"
-                  process_cache "$(dirname $param)/$exact_match"
-                  return
+                  if dirname $param == "."; then
+                    echo "Exact match found: $exact_match"
+                    process_cache "$exact_match"
+                    return
+                  else
+                    echo "Exact match found: $(dirname $param)/$exact_match"
+                    process_cache "$(dirname $param)/$exact_match"
+                    return
+                  fi
                 else
                   echo "No exact match found for $param"
                   echo "Looking for prefix match: $param"
@@ -191,10 +197,10 @@ workflows:
             parameters:
               working_directory:
                 - /mnt/ramdisk
-                - /root/project
-      - circleci:
-          matrix:
-            parameters:
-              working_directory:
-                - /mnt/ramdisk
-                - /root/project
+      #           - /root/project
+      # - circleci:
+      #     matrix:
+      #       parameters:
+      #         working_directory:
+      #           - /mnt/ramdisk
+      #           - /root/project
