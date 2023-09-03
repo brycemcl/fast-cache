@@ -64,7 +64,7 @@ commands:
               for param in "$@"; do
                 # Try to find an exact match by adding the .tar.zstd prefix
                 echo "Looking for exact match: $param.tar.zstd"
-                exact_match="$(rclone lsjson --fast-list --files-only -R cache:fast-cache/${param}.tar.zstd | jq -er '.[].Path')"
+                exact_match="$(rclone lsjson --fast-list --files-only -R cache:fast-cache/${param}.tar.zstd | jq -er '.[].Path')" || true
                 echo "after looking for exact match: $param.tar.zstd"
 
                 # If an exact match is found
