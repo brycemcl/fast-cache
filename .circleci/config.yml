@@ -85,7 +85,8 @@ commands:
             process_objects() {
               local object=$1
               echo "Processing $object"
-              rclone lsjson --fast-list "cache:fast-cache/$object"
+              rclone size "cache:fast-cache/$object"
+              echo  "cache:fast-cache/$object"
               rclone cat \
                 --buffer-size=16Mi \
                 --checkers=16 \
