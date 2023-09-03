@@ -44,12 +44,12 @@ commands:
   restore_cache_zstd:
     parameters:
       keys:
-        description: 'Unique identifier for this cache'
+        description: 'List of cache keys to lookup for a cache to restore. Only first existing key will be restored.'
         type: string
       displayName:
         description: 'Title of the step to be shown in the CircleCI UI'
         type: string
-        default: 'Saving Cache'
+        default: 'Restoring Cache'
     steps:
       - run:
           name: << parameters.displayName >>
