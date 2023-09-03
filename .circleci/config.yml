@@ -126,8 +126,8 @@ jobs:
           key: 'v1-<< parameters.working_directory >>-<< pipeline.git.revision >>'
           paths: 'node_modules/'
       - run: mv node_modules uploads.old
-      - restore_cache_zstd:
-          keys: 'v1-<< parameters.working_directory >>-<< pipeline.git.revision >>'
+      # - restore_cache_zstd:
+      #     keys: 'v1-<< parameters.working_directory >>-<< pipeline.git.revision >>'
   circleci:
     parameters:
       working_directory:
@@ -161,10 +161,10 @@ workflows:
             parameters:
               working_directory:
                 - /mnt/ramdisk
-                - /root/project
-      - circleci:
-          matrix:
-            parameters:
-              working_directory:
-                - /mnt/ramdisk
-                - /root/project
+                # - /root/project
+      # - circleci:
+      #     matrix:
+      #       parameters:
+      #         working_directory:
+      #           - /mnt/ramdisk
+      #           - /root/project
