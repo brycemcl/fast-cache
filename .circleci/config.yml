@@ -65,7 +65,7 @@ commands:
                 # If an exact match is found
                 if [ -n "$exact_match" ]; then
                   echo "Exact match found: $exact_match"
-                  process_objects "$exact_match"
+                  process_objects $exact_match
                   return
                 else
                   # Else, find a prefix match sorted by ModTime
@@ -73,7 +73,7 @@ commands:
 
                   if [ -n "$prefix_match" ]; then
                     echo "Prefix match found: $prefix_match"
-                    process_objects "$prefix_match"
+                    process_objects $prefix_match
                     return
                   else
                     echo "No match found for $param"
