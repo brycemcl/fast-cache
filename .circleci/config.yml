@@ -23,7 +23,30 @@ commands:
       - run:
           name: << parameters.displayName >>
           when: << parameters.when >>
-          command: pnpm run start:upload-zstd -- "{{ .parameters.cacheKey}}" "{{ .parameters.paths}}"
+          command: |
+            #!/bin/bash
+            KEY=$1
+            PATHS=$2
+            echo "Uploading $PATHS to <<parameters.cacheKey>>"
+            set -e
+            start=$(date +%s)
+            tar -cP << parameters.paths >> |
+              zstd -2 --long --threads=4 - |
+              rclone rcat \
+                --buffer-size=16Mi \
+                --checkers=16 \
+                --fast-list \
+                --ignore-checksum \
+                --streaming-upload-cutoff=100Ki \
+                --transfers=40 \
+                --use-mmap \
+                "cache:fast-cache/<<parameters.cacheKey>>.tar.zstd"
+            end=$(date +%s)
+            runtime=$((end - start))
+            echo "Upload: $runtime seconds"
+            echo "cache:fast-cache/<<parameters.cacheKey>>.tar.zstd"
+
+          # pnpm run start:upload-zstd -- "{{ .parameters.cacheKey}}" "{{ .parameters.paths}}"
 
 jobs:
   zstd:
