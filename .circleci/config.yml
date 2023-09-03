@@ -72,6 +72,7 @@ commands:
                   return
                 else
                   # Else, find a prefix match sorted by ModTime
+                  echo "No exact match found for $param"
                   prefix_match="$(rclone lsjson --fast-list --files-only -R cache:fast-cache/ --include "${param}*" | jq -er 'sort_by(.ModTime) | last | .Path')"
                   echo "prefix_match: $prefix_match"
                   if [ -n "$prefix_match" ]; then
