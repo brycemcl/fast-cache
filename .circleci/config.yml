@@ -72,7 +72,8 @@ commands:
                   process_cache "$(dirname $param)/$exact_match"
                   return
                 else
-                  echo "No exact match found for $param. Looking for prefix match."
+                  echo "No exact match found for $param"
+                  echo "Looking for prefix match: $param"
                   # Else, find a prefix match sorted by ModTime
                   prefix_match="$(rclone lsjson --fast-list --files-only -R cache:fast-cache/ --include "${param}*" | jq -er 'sort_by(.ModTime) | last | .Path')"
                   if [ -n "$prefix_match" ]; then
