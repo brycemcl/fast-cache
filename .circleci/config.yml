@@ -104,8 +104,12 @@ commands:
 
 jobs:
   zstd:
+    parameters:
+      working_directory:
+        description: 'Working directory for the job'
+        type: string
     resource_class: 'arm.large'
-    working_directory: /mnt/ramdisk
+    working_directory: << parameters.working_directory >>
     docker:
       - image: node:18-slim
     steps:
@@ -118,14 +122,18 @@ jobs:
       - run: apt-get install -y tar zstd rclone jq
       - run: rclone config create cache "google cloud storage" location=us-east1 bucket_policy_only=true env_auth=true
       - save_cache_zstd:
-          key: 'v1-<< pipeline.git.revision >>'
+          key: 'v1-<< parameters.working_directory >>-< pipeline.git.revision >>'
           paths: 'node_modules/'
       - run: mv node_modules uploads.old
       - restore_cache_zstd:
-          keys: 'v1-<< pipeline.git.revision >>'
+          keys: 'v1-<< parameters.working_directory >>-< pipeline.git.revision >>'
   circleci:
+    parameters:
+      working_directory:
+        description: 'Working directory for the job'
+        type: string
     resource_class: 'arm.large'
-    working_directory: /mnt/ramdisk
+    working_directory:  << parameters.working_directory >>
     docker:
       - image: node:18-slim
     steps:
@@ -136,19 +144,25 @@ jobs:
       - run: pnpm install --ignore-scripts bloater
       # - run: pnpm run start:createData
       - save_cache:
-          key: v1-{{ .Environment.CIRCLE_SHA1 }}
+          key: v1-<< parameters.working_directory >>-{{ .Environment.CIRCLE_SHA1 }}
           paths:
             - node_modules/
       - run: mv node_modules uploads.old
       - restore_cache:
           keys:
-            - v1-
+            - v1-<< parameters.working_directory >>-{{ .Environment.CIRCLE_SHA1 }}
 
 workflows:
   comparison:
     jobs:
-      # - zstd:
-      #     requires:
-      #       - circleci
       - zstd
-      - circleci
+        matrix:
+          parameters:
+            working_directory:
+              - /mnt/ramdisk
+              - /root/project
+      - circleci:
+          parameters:
+            working_directory:
+              - /mnt/ramdisk
+              - /root/project
