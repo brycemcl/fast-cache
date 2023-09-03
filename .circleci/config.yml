@@ -19,6 +19,7 @@ commands:
         type: string
         default: 'on_success'
     steps:
+      - run: npm install pnpm -g
       - run:
           name: << parameters.displayName >>
           when: << parameters.when >>
