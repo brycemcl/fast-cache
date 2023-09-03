@@ -100,6 +100,7 @@ commands:
             }
 
             # Call the function with all script arguments
+            echo "Looking for cache keys: $KEYS"
             find_objects_in_bucket $KEYS
 
 jobs:
