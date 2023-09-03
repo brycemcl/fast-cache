@@ -150,8 +150,8 @@ jobs:
       - run: apt-get update && apt-get install -y git openssh-client
       - checkout
       - run: pnpm install
-      - run: pnpm install --ignore-scripts bloater
-      # - run: pnpm run start:createData
+      # - run: pnpm install --ignore-scripts bloater
+      - run: pnpm run start:createData
       - run: apt-get install -y tar zstd rclone jq
       - run: rclone config create cache "google cloud storage" location=us-east1 bucket_policy_only=true env_auth=true
       - save_cache_zstd:
@@ -177,8 +177,8 @@ jobs:
       - run: apt-get update && apt-get install -y git openssh-client
       - checkout
       - run: pnpm install
-      - run: pnpm install --ignore-scripts bloater
-      # - run: pnpm run start:createData
+      # - run: pnpm install --ignore-scripts bloater
+      - run: pnpm run start:createData
       - save_cache:
           key: v1-<< parameters.working_directory >>-{{ .Environment.CIRCLE_SHA1 }}
           paths:
