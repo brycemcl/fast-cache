@@ -21,11 +21,11 @@ commands:
       - run:
           name: << parameters.displayName >>
           when: << parameters.when >>
+          environment:
+            KEY: << parameters.key >>
           command: |
             #!/bin/bash
-            KEY=$1
-            PATHS=$2
-            echo "Uploading $PATHS to <<parameters.key>>"
+            echo "Uploading << parameters.paths >> to $KEY"
             set -e
             start=$(date +%s)
             tar -cP << parameters.paths >> |
@@ -38,11 +38,11 @@ commands:
                 --streaming-upload-cutoff=100Ki \
                 --transfers=40 \
                 --use-mmap \
-                "cache:fast-cache/<<parameters.key>>.tar.zstd"
+                "cache:fast-cache/$KEY.tar.zstd"
             end=$(date +%s)
             runtime=$((end - start))
             echo "Upload: $runtime seconds"
-            echo "cache:fast-cache/<<parameters.key>>.tar.zstd"
+            echo "cache:fast-cache/$KEY.tar.zstd"
 
 jobs:
   zstd:
