@@ -63,23 +63,21 @@ commands:
               # Loop through all arguments passed to the function
               for param in "$@"; do
                 # Try to find an exact match by adding the .tar.zstd prefix
-                echo "Looking for exact match: $param.tar.zstd"
+                echo "Looking for exact match: $param"
                 exact_match="$(rclone lsjson --fast-list --files-only -R cache:fast-cache/${param}.tar.zstd | jq -er '.[].Path')" || true
-                echo "after looking for exact match: $param.tar.zstd"
 
                 # If an exact match is found
                 if [ -n "$exact_match" ]; then
                   echo "Exact match found: $(dirname $param)/$exact_match"
-                  process_objects "$(dirname $param)/$exact_match"
+                  process_cache "$(dirname $param)/$exact_match"
                   return
                 else
+                  echo "No exact match found for $param. Looking for prefix match."
                   # Else, find a prefix match sorted by ModTime
-                  echo "No exact match found for $param"
                   prefix_match="$(rclone lsjson --fast-list --files-only -R cache:fast-cache/ --include "${param}*" | jq -er 'sort_by(.ModTime) | last | .Path')"
-                  echo "prefix_match: $prefix_match"
                   if [ -n "$prefix_match" ]; then
-                    echo "Prefix match found: $(dirname $param)/$prefix_match"
-                    process_objects "$(dirname $param)/$prefix_match"
+                    echo "Prefix match found: $prefix_match"
+                    process_cache "$prefix_match"
                     return
                   else
                     echo "No match found for $param"
@@ -88,9 +86,9 @@ commands:
               done
             }
 
-            process_objects() {
+            process_cache() {
               local object=$1
-              echo "Processing object: $object"
+              echo "Processing cache: $object"
               rclone cat \
                 --buffer-size=16Mi \
                 --checkers=16 \
@@ -141,7 +139,7 @@ jobs:
         description: 'Working directory for the job'
         type: string
     resource_class: 'arm.large'
-    working_directory:  << parameters.working_directory >>
+    working_directory: << parameters.working_directory >>
     docker:
       - image: node:18-slim
     steps:
