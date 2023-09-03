@@ -53,6 +53,8 @@ commands:
     steps:
       - run:
           name: << parameters.displayName >>
+          environment:
+            KEYS: << parameters.keys >>
           command: |
             #!/bin/bash
 
@@ -84,8 +86,6 @@ commands:
 
             process_objects() {
               local object=$1
-              echo "Processing $object"
-              rclone ls --fast-list "cache:fast-cache/$object"
               rclone cat \
                 --buffer-size=16Mi \
                 --checkers=16 \
@@ -99,7 +99,7 @@ commands:
             }
 
             # Call the function with all script arguments
-            find_objects_in_bucket "v1-"
+            find_objects_in_bucket $KEYS
 
 jobs:
   zstd:
@@ -115,9 +115,9 @@ jobs:
       #       - v1-
       - run: apt-get install -y tar zstd rclone jq
       - run: rclone config create cache "google cloud storage" location=us-east1 bucket_policy_only=true env_auth=true
-      # - save_cache_zstd:
-      #     key: 'v1-<< pipeline.git.revision >>'
-      #     paths: 'node_modules/'
+      - save_cache_zstd:
+          key: 'v1-<< pipeline.git.revision >>'
+          paths: 'node_modules/'
       - restore_cache_zstd:
           keys: 'v1-<< pipeline.git.revision >>'
   circleci:
