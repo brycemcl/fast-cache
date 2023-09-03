@@ -123,11 +123,11 @@ jobs:
       - run: apt-get install -y tar zstd rclone jq
       - run: rclone config create cache "google cloud storage" location=us-east1 bucket_policy_only=true env_auth=true
       - save_cache_zstd:
-          key: 'v1-<< parameters.working_directory >>-< pipeline.git.revision >>'
+          key: 'v1-<< parameters.working_directory >>-<< pipeline.git.revision >>'
           paths: 'node_modules/'
       - run: mv node_modules uploads.old
       - restore_cache_zstd:
-          keys: 'v1-<< parameters.working_directory >>-< pipeline.git.revision >>'
+          keys: 'v1-<< parameters.working_directory >>-<< pipeline.git.revision >>'
   circleci:
     parameters:
       working_directory:
