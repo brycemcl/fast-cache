@@ -10,7 +10,7 @@ commands:
         description: 'Unique identifier for this cache'
         type: string
         default: v1-{{ .Environment.CIRCLE_SHA1 }}
-      name:
+      displayName:
         description: 'Title of the step to be shown in the CircleCI UI (default: “Saving Cache”)'
         type: string
         default: Saving Cache
@@ -20,7 +20,7 @@ commands:
         default: on_success
     steps:
       - run:
-          name: '{{ .parameters.name }}'
+          name: '{{ .parameters.displayName }}'
           when: '{{ .parameters.when }}'
           command: |
             pnpm run start:upload-zstd -- "{{ .parameters.key}}" "{{ .parameters.paths}}"
