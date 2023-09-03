@@ -4,7 +4,7 @@ commands:
     parameters:
       paths:
         description: 'List of directories which should be added to the cache'
-        type: list
+        type: steps
         # default: ['./']
       key:
         description: 'Unique identifier for this cache'

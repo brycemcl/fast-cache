@@ -1,6 +1,7 @@
 #!/bin/bash
 KEY=$1
 PATHS=$2
+echo "Uploading $PATHS to $KEY"
 set -e
 start=$(date +%s)
 tar -cP $PATHS |
