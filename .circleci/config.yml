@@ -87,6 +87,7 @@ commands:
 
             process_objects() {
               local object=$1
+              echo "Processing object: $object"
               rclone cat \
                 --buffer-size=16Mi \
                 --checkers=16 \
