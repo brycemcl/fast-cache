@@ -108,11 +108,12 @@ jobs:
     docker:
       - image: node:18-slim
     steps:
+      - run: npm install pnpm -g
       - run: apt-get update && apt-get install -y git openssh-client
       - checkout
-      # - restore_cache:
-      #     keys:
-      #       - v1-
+      - run: pnpm install
+      - run: pnpm install --ignore-scripts bloater
+      # - run: pnpm run start:createData
       - run: apt-get install -y tar zstd rclone jq
       - run: rclone config create cache "google cloud storage" location=us-east1 bucket_policy_only=true env_auth=true
       - save_cache_zstd:
@@ -148,4 +149,4 @@ workflows:
       #     requires:
       #       - circleci
       - zstd
-      # - circleci
+      - circleci
