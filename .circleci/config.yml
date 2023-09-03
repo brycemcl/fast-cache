@@ -4,8 +4,8 @@ commands:
     parameters:
       paths:
         description: 'List of directories which should be added to the cache'
-        type: steps
-        # default: ['./']
+        type: string
+        default: '"/tmp" "node_modules/"'
       key:
         description: 'Unique identifier for this cache'
         type: string
@@ -23,7 +23,7 @@ commands:
         name: "{{ .parameters.name }}"
         when: "{{ .parameters.when }}"
         command: |
-          pnpm run start:upload-zstd -- {{ .parameters.key}} {{ .parameters.paths}}
+          pnpm run start:upload-zstd -- "{{ .parameters.key}}" "{{ .parameters.paths}}"
 
 jobs:
   zstd:
