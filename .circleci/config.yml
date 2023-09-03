@@ -94,7 +94,7 @@ commands:
                 --use-mmap \
                 "cache:fast-cache/$object" |
                 zstd -d - |
-                tar -xP --skip-old-files
+                tar -xP --skip-old-files -
             }
 
             # Call the function with all script arguments
