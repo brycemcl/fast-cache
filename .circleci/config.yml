@@ -22,8 +22,7 @@ commands:
       - run:
           name: '{{ .parameters.displayName }}'
           when: '{{ .parameters.when }}'
-          command: |
-            pnpm run start:upload-zstd -- "{{ .parameters.key}}" "{{ .parameters.paths}}"
+          command: pnpm run start:upload-zstd -- "{{ .parameters.key}}" "{{ .parameters.paths}}"
 
 jobs:
   zstd:
