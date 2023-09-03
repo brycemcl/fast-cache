@@ -63,7 +63,7 @@ commands:
               # Loop through all arguments passed to the function
               for param in "$@"; do
                 # Try to find an exact match by adding the .tar.zstd prefix
-                exact_match="$(rclone lsjson --fast-list --files-only -R cache:fast-cache/${param}.tar.zstd | jq -e '.[].Path')"
+                exact_match="$(rclone lsjson --fast-list --files-only -R cache:fast-cache/${param}.tar.zstd | jq -er '.[].Path')"
 
                 # If an exact match is found
                 if [ -n "$exact_match" ]; then
@@ -72,7 +72,7 @@ commands:
                   return
                 else
                   # Else, find a prefix match sorted by ModTime
-                  prefix_match="$(rclone lsjson --fast-list --files-only -R cache:fast-cache/ --include "${param}*" | jq -e 'sort_by(.ModTime) | last | .Path')"
+                  prefix_match="$(rclone lsjson --fast-list --files-only -R cache:fast-cache/ --include "${param}*" | jq -er 'sort_by(.ModTime) | last | .Path')"
 
                   if [ -n "$prefix_match" ]; then
                     echo "Prefix match found: $(dirname $param)/$prefix_match"
