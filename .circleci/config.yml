@@ -41,6 +41,65 @@ commands:
             runtime=$((end - start))
             echo "Upload: $runtime seconds"
             echo "cache:fast-cache/<< parameters.key >>.tar.zstd"
+  restore_cache_zstd:
+    parameters:
+      keys:
+        description: 'Unique identifier for this cache'
+        type: string
+      displayName:
+        description: 'Title of the step to be shown in the CircleCI UI'
+        type: string
+        default: 'Saving Cache'
+    steps:
+      - run:
+          name: << parameters.displayName >>
+          command: |
+            #!/bin/bash
+
+            find_objects_in_bucket() {
+              # Loop through all arguments passed to the function
+              for param in "$@"; do
+                # Try to find an exact match by adding the .tar.zstd prefix
+                exact_match=$(rclone lsjson --fast-list --files-only cache:fast-cache/${param}.tar.zstd | jq -e '.[].Path')
+
+                # If an exact match is found
+                if [ -n "$exact_match" ]; then
+                  echo "Exact match found: $exact_match"
+                  process_objects "$exact_match"
+                  return
+                else
+                  # Else, find a prefix match sorted by ModTime
+                  prefix_match=$(rclone lsjson --fast-list --files-only cache:fast-cache/ --include "${param}*" | jq 'sort_by(.ModTime) | last | .Path')
+
+                  if [ -n "$prefix_match" ]; then
+                    echo "Prefix match found: $prefix_match"
+                    process_objects "$prefix_match"
+                    return
+                  else
+                    echo "No match found for $param"
+                  fi
+                fi
+              done
+            }
+
+            process_objects() {
+              local object=$1
+              echo "Processing $object"
+              rclone cat \
+                --buffer-size=16Mi \
+                --checkers=16 \
+                --fast-list \
+                --ignore-checksum \
+                --transfers=40 \
+                --use-mmap \
+                "cache:fast-cache/$object" |
+                zstd -d - |
+                tar -xP --skip-old-files
+            }
+
+            # Call the function with all script arguments
+            IFS=', ' read -ra ADDR <<< "$string"
+            find_objects_in_bucket "${ADDR[@]}"
 
 jobs:
   zstd:
@@ -57,8 +116,10 @@ jobs:
       - run: apt-get install -y tar zstd rclone
       - run: rclone config create cache "google cloud storage" location=us-east1 bucket_policy_only=true env_auth=true
       - save_cache_zstd:
-          key: "v1-<< pipeline.git.revision >>"
+          key: 'v1-<< pipeline.git.revision >>'
           paths: 'node_modules/'
+      - restore_cache_zstd:
+          keys: 'v1-<< pipeline.git.revision >>'
   circleci:
     resource_class: 'arm.large'
     # working_directory: /mnt/ramdisk
